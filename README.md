@@ -1,32 +1,45 @@
-# 📦 Control de Caja - PagaYa S.A.S.
+# 📦 Sistema de Caja - PagaYa S.A.S.
 
 # Integrantes
 Darwin samuel Machuca Gonzalez   01251152024
 Bladimir Ferney Bermudez Toloza  01251152013
 
+Este repositorio contiene el módulo de control de caja desarrollado en **Python** (utilizando `ipywidgets` para la interfaz gráfica interactiva) para la empresa recaudadora de pagos PagaYa S.A.S. El sistema gestiona el ingreso de dinero durante el turno de un cajero y cuenta con un mecanismo de suspensión automática por seguridad al alcanzar un tope de efectivo.
 
-# Material dado por el Profesor 
+## 🎓 Información Académica
 
-Preparcial:[https://drive.google.com/file/d/1H77uJ2qrU2XkWag7ZYZHTHwSWYPgf_jl/view?usp=sharing]
+| | |
+|---|---|
+| **Asignatura** | Programación 1 |
+| **Docente** | Ing. Carlos Carrascal |
 
-Este repositorio contiene el módulo de control de caja desarrollado en Python para la empresa recaudadora de pagos PagaYa S.A.S. El sistema gestiona el ingreso de dinero durante el turno de un cajero y cuenta con un mecanismo de suspensión por seguridad al alcanzar un tope de efectivo máximo.
+
+## 📚 Material de Referencia
+* **Preparcial:** [Ver documento original](https://drive.google.com/file/d/1H77uJ2qrU2XkWag7ZYZHTHwSWYPgf_jl/view?usp=sharing)
 
 
-## 🚀 Características Principales (Requerimientos Funcionales)
+## Diagrama de flujo
+![Diagrama de Flujo de Datos](DFD%20PREPARCIAL.png)
 
-- **RF1 - Inicio de turno:** Configuración del identificador del cajero y validación estricta del tope máximo de recaudo (> 0).
-- **RF2 - Atención de clientes:** Bucle continuo de recaudo y conteo de transacciones exitosas.
-- **RF3 - Validación de montos:** Rechazo automático de montos negativos, ceros o valores no numéricos sin interrumpir la ejecución.
-- **RF4 - Suspensión por seguridad:** Bloqueo automático de la caja al alcanzar o superar el tope de recaudo establecido.
-- **RF5 - Cierre manual por fin de cola:** Opción de finalizar el turno ingresando `0` o la palabra `FIN`.
-- **RF6 - Reporte final detallado:** Resumen del turno que incluye total recaudado, promedio por transacción, motivo de cierre y formateo de moneda colombiana (COP).
 
-## 🛠️ Tecnologías y Ejecución
+## 📝 Descripción del Problema y Reglas de Negocio
 
-- **Lenguaje:** Python 3.x
-- **Entorno recomendado:** Google Colab o cualquier terminal local.
+El sistema de caja funciona bajo los siguientes requerimientos funcionales:
 
-**Para ejecutar localmente:**
-1. Clona este repositorio:
-   ```bash
-   git clone [https://github.com/tu-usuario/nombre-del-repositorio.git](https://github.com/tu-usuario/nombre-del-repositorio.git)
+1. **Inicio de turno:** El cajero inicia turno ingresando su nombre y un **tope máximo de dinero** (mayor que 0).
+2. **Atención:** Se atiende a los clientes ingresando el monto de cada transacción en la interfaz.
+3. **Validación:** Los montos menores o iguales a `0` se rechazan y no afectan los saldos.
+4. **Suspensión por tope:** Si el recaudo total alcanza o supera el tope, la caja se bloquea automáticamente con el motivo **"Tope alcanzado"**.
+5. **Cierre manual:** Si se ingresa el monto `0`, la palabra `FIN`, o se presiona el botón "Fin de Cola", el turno termina con el motivo **"Fin de cola"**.
+6. **Reporte:** Al finalizar, la pantalla imprime un reporte completo con el resumen de transacciones, promedios y el motivo del cierre.
+
+---
+
+## 📂 Contenido del Repositorio
+
+```text
+.
+├── README.md           # Documentación del proyecto (Este archivo)
+├── DFD Preparcial 
+├── pagaYa.ipynb        # Cuaderno de Jupyter con la interfaz gráfica completa
+└── PagaYa.py           # Script original de respaldo
