@@ -58,3 +58,41 @@ btn_fin_cola = widgets.Button(description="Fin de Cola (Cerrar)", button_style='
 txt_monto.disabled = True
 btn_cobrar.disabled = True
 btn_fin_cola.disabled = True
+
+
+
+def iniciar_turno(b):
+    with out_resultado:
+        clear_output()
+        cajero = txt_cajero.value.strip()
+        tope = int_tope.value
+        
+        if not cajero:
+            print("Error: Debe ingresar el nombre del cajero.")
+            return
+            
+        if tope <= 0:
+            print(" Error: El tope debe ser un número mayor que cero.")
+            return
+
+        # Inicializar estado
+        estado_caja["cajero"] = cajero
+        estado_caja["tope"] = tope
+        estado_caja["recaudo_total"] = 0
+        estado_caja["transacciones"] = 0
+        estado_caja["activa"] = True
+        estado_caja["motivo_cierre"] = ""
+
+        # Habilitar/Deshabilitar interfaz
+        txt_cajero.disabled = True
+        int_tope.disabled = True
+        btn_iniciar.disabled = True
+        
+        txt_monto.disabled = False
+        btn_cobrar.disabled = False
+        btn_fin_cola.disabled = False
+        
+        print(f"Turno iniciado para el cajero {cajero}. Tope: {formatear_moneda(tope)}")
+        print("Esperando clientes...")
+
+btn_iniciar.on_click(iniciar_turno)
