@@ -96,3 +96,83 @@ def iniciar_turno(b):
         print("Esperando clientes...")
 
 btn_iniciar.on_click(iniciar_turno)
+
+
+def registrar_pago(b):
+    with out_resultado:
+        clear_output()
+        
+        if not estado_caja["activa"]:
+            print(" La caja está cerrada.")
+            return
+            
+        entrada = txt_monto.value.strip().upper()
+        
+        # RF5: Cierre por fin de cola tipeando 0 o FIN
+        if entrada == "FIN" or entrada == "0":
+            cerrar_caja("Fin de cola")
+            return
+            
+        # RF3: Validación de montos
+        try:
+            monto = int(entrada)
+            if monto <= 0:
+                print("Error: Monto rechazado. Debe ser mayor a cero.")
+                return
+        except ValueError:
+            print(" Error: Monto rechazado. Ingrese un valor numérico válido.")
+            return
+
+        # Procesar transacción
+        estado_caja["recaudo_total"] += monto
+        estado_caja["transacciones"] += 1
+        
+        print(f" Pago de {formatear_moneda(monto)} registrado correctamente.")
+        print(f"Acumulado actual: {formatear_moneda(estado_caja['recaudo_total'])}")
+        txt_monto.value = "" # Limpiar campo
+        
+        # RF4: Suspensión por seguridad
+        if estado_caja["recaudo_total"] >= estado_caja["tope"]:
+            print("\n CAJA SUSPENDIDA: se alcanzó el tope de recaudo. Diríjase a tesorería.")
+            cerrar_caja("Tope alcanzado")
+
+btn_cobrar.on_click(registrar_pago)
+
+
+def boton_fin_cola(b):
+    with out_resultado:
+        clear_output()
+        cerrar_caja("Fin de cola")
+
+btn_fin_cola.on_click(boton_fin_cola)
+
+
+def cerrar_caja(motivo):
+    estado_caja["activa"] = False
+    estado_caja["motivo_cierre"] = motivo
+    
+    # Bloquear interfaz de pagos
+    txt_monto.disabled = True
+    btn_cobrar.disabled = True
+    btn_fin_cola.disabled = True
+    
+    # Reactivar inicio para nuevo turno
+    txt_cajero.disabled = False
+    int_tope.disabled = False
+    btn_iniciar.disabled = False
+    
+    generar_reporte()
+
+
+
+
+display(widgets.HTML("<h2>SISTEMA DE CAJA - PAGAYA S.A.S.</h2>"))
+
+display(widgets.HTML("<h3>1. Inicio de Turno</h3>"))
+display(widgets.HBox([txt_cajero, int_tope, btn_iniciar]))
+
+display(widgets.HTML("<hr><h3>2. Atención de Clientes</h3>"))
+display(widgets.HBox([txt_monto, btn_cobrar, btn_fin_cola]))
+
+display(widgets.HTML("<hr><h3>Monitor de Caja / Reportes</h3>"))
+display(out_resultado)
