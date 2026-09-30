@@ -38,3 +38,23 @@ def generar_reporte():
     print(f"Recaudo total:        {formatear_moneda(recaudo)}")
     print(f"Promedio/transacción: {formatear_promedio(promedio)}")
     print(f"Motivo de cierre:     {motivo}")
+
+
+
+out_resultado = widgets.Output()
+
+# Widgets para el RF1: Inicio de turno
+txt_cajero = widgets.Text(description='Cajero:', placeholder='Nombre o código')
+int_tope = widgets.IntText(value=0, description='Tope Max:')
+btn_iniciar = widgets.Button(description="Iniciar Turno", button_style='success')
+
+# Widgets para el RF2, RF3, RF4: Atención de clientes
+# Se usa Text en lugar de Int para permitir la palabra "FIN" o el "0"
+txt_monto = widgets.Text(description='Monto Recibido:', placeholder='Monto, 0 o FIN', style={'description_width': 'initial'})
+btn_cobrar = widgets.Button(description="Registrar Pago", button_style='primary')
+btn_fin_cola = widgets.Button(description="Fin de Cola (Cerrar)", button_style='danger')
+
+# Deshabilitar controles de pago hasta que inicie el turno
+txt_monto.disabled = True
+btn_cobrar.disabled = True
+btn_fin_cola.disabled = True
